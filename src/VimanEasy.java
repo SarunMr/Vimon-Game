@@ -1,53 +1,13 @@
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
+
 import java.util.HashSet;
 import java.util.Random;
 import javax.swing.*;
 
 public class VimanEasy extends JPanel implements ActionListener, KeyListener {
 
-    private void debugImageLoading() {
-            System.out.println("\n=== Image Loading Debug Info ===");
-    
-    // Check if GameImage directory exists
-    URL dirUrl = getClass().getResource("/GameImage");
-    System.out.println("GameImage directory URL: " + dirUrl);
-    
-    // Try to list contents of GameImage directory
-    try {
-        File dir = new File(dirUrl.toURI());
-        System.out.println("Directory contents:");
-        for (File file : dir.listFiles()) {
-            System.out.println("- " + file.getName());
-        }
-    } catch (URISyntaxException e) {
-        System.out.println("Could not list directory contents: " + e.getMessage());
-    }
-    
-    // Test each image path
-    String[] imageNames = {
-        "wall.png",
-        "blueGhost.png",
-        "orangeGhost.png",
-        "pinkGhost.png",
-        "redGhost.png",
-        "pacmanUp.png",
-        "pacmanDown.png",
-        "pacmanLeft.png",
-        "pacmanRight.png"
-    };
-    
-    for (String imageName : imageNames) {
-        URL imageUrl = getClass().getResource("/GameImage/" + imageName);
-        System.out.println("Testing " + imageName + ": " + (imageUrl != null ? "Found" : "Not found"));
-    }
-    
-    System.out.println("===========================\n");
-    }
     
     class Block {
         int x;
@@ -129,12 +89,24 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
      final Image orangeGhostImage;
      final Image pinkGhostImage;
      final Image redGhostImage;
+     final Image powerFoodImage;
 
      final Image pacmanUpImage;
      final Image pacmanDownImage;
      final Image pacmanLeftImage;
      final Image pacmanRightImage;
-
+     final Icon mainMenuButtonImg;
+     final Icon pauseButtonImg;
+     final Icon retryButtonImg;
+     final Icon continueButtonImg;
+    private boolean isPaused = false;
+    private JDialog pauseDialog;
+    private JButton pauseButton;
+    private JDialog gameOverDialog;
+    private boolean gameOverScreenShown = false;
+     private JLabel finalScoreLabel; // Add this as a class field
+        private JFrame parentFrame;
+    
     // X = wall, O = skip, P = pac man, ' ' = food
     // Ghosts: b = blue, o = orange, p = pink, r = red
     private final String[] tileMap = {
@@ -147,7 +119,7 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
             "XXXX XXXX XXXX XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXrXX X XXXX",
-            "O       bpo       O",
+            "X       bpo       X",
             "XXXX X XXXXX X XXXX",
             "OOOX X       X XOOO",
             "XXXX X XXXXX X XXXX",
@@ -174,31 +146,27 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
     boolean gameOver = false;
 
     VimanEasy() {
-            debugImageLoading();
-        // Add this at the start of the constructor
-URL resourceUrl = getClass().getResource("/GameImage");
-if (resourceUrl == null) {
-    System.err.println("Cannot find GameImage directory");
-} else {
-    System.out.println("Found GameImage directory at: " + resourceUrl);
-}
+        this.parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.BLACK);
         addKeyListener(this);
         setFocusable(true);
 
         // load images
-        wallImage = new ImageIcon(getClass().getResource("./wall.png")).getImage();
-        blueGhostImage = new ImageIcon(getClass().getResource("./blueGhost.png")).getImage();
-        orangeGhostImage = new ImageIcon(getClass().getResource("./orangeGhost.png")).getImage();
-        pinkGhostImage = new ImageIcon(getClass().getResource("./pinkGhost.png")).getImage();
-        redGhostImage = new ImageIcon(getClass().getResource("./redGhost.png")).getImage();
-
-        pacmanUpImage = new ImageIcon(getClass().getResource("./pacmanUp.png")).getImage();
-        pacmanDownImage = new ImageIcon(getClass().getResource("./pacmanDown.png")).getImage();
-        pacmanLeftImage = new ImageIcon(getClass().getResource("./pacmanLeft.png")).getImage();
-        pacmanRightImage = new ImageIcon(getClass().getResource("./pacmanRight.png")).getImage();
-
+        wallImage = new ImageIcon(getClass().getResource("./Images/wall.png")).getImage();
+        blueGhostImage = new ImageIcon(getClass().getResource("./Images/blueGhost.png")).getImage();
+        orangeGhostImage = new ImageIcon(getClass().getResource("./Images/orangeGhost.png")).getImage();
+        pinkGhostImage = new ImageIcon(getClass().getResource("./Images/pinkGhost.png")).getImage();
+        redGhostImage = new ImageIcon(getClass().getResource("./Images/redGhost.png")).getImage();
+        powerFoodImage = new ImageIcon(getClass().getResource("./Images/powerFood.png")).getImage();
+;        pacmanUpImage = new ImageIcon(getClass().getResource("./Images/pacmanUp.png")).getImage();
+        pacmanDownImage = new ImageIcon(getClass().getResource("./Images/pacmanDown.png")).getImage();
+        pacmanLeftImage = new ImageIcon(getClass().getResource("./Images/pacmanLeft.png")).getImage();
+        pacmanRightImage = new ImageIcon(getClass().getResource("./Images/pacmanRight.png")).getImage();
+        mainMenuButtonImg =  new ImageIcon(getClass().getResource("./Images/mainMenuButton.png"));
+        continueButtonImg = new ImageIcon(getClass().getResource("./Images/continueButton.png"));
+        pauseButtonImg = new ImageIcon(getClass().getResource("./Images/pauseButton.png"));
+        retryButtonImg = new ImageIcon(getClass().getResource("./Images/retryButton.png"));
         loadMap();
         
         for (Block ghost : ghosts) {
@@ -208,9 +176,175 @@ if (resourceUrl == null) {
         // how long it takes to start timer, milliseconds gone between frames
         gameLoop = new Timer(50, this); // 20fps (1000/50)
         gameLoop.start();
+        createGameOverScreen();
+        createPauseMenu();
+        pauseButton = new JButton(pauseButtonImg);
+        pauseButton.setBounds(550, 10, 40, 40);
+        pauseButton.addActionListener(e -> pauseGame());
+        setLayout(null);
+        add(pauseButton);
 
     }
+  private void createGameOverScreen() {
+       gameOverDialog = new JDialog(parentFrame); 
+        gameOverDialog.setSize(300, 250);
+        gameOverDialog.setLayout(new BorderLayout());
+        gameOverDialog.setLocationRelativeTo(null);
+        gameOverDialog.setModal(true);
+        gameOverDialog.setUndecorated(true);
 
+        // Create main panel with black background
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(Color.BLACK);
+        mainPanel.setBorder(BorderFactory.createLineBorder(Color.BLUE, 3));
+
+        // Game Over Label
+        JLabel gameOverLabel = new JLabel("Game Over");
+        gameOverLabel.setFont(new Font("Arial", Font.BOLD, 26));
+        gameOverLabel.setForeground(Color.RED);
+        gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Score Label
+        finalScoreLabel = new JLabel(); // Initialize the class field
+        finalScoreLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        finalScoreLabel.setForeground(Color.WHITE);
+        finalScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        buttonPanel.setBackground(Color.BLACK);
+
+        JButton retryButton = new JButton(retryButtonImg);
+        retryButton.addActionListener(e -> {
+            gameOverDialog.setVisible(false);
+            gameOverScreenShown = false;
+            restartGame();
+        });
+
+        JButton mainMenuButton = new JButton(mainMenuButtonImg);
+        mainMenuButton.addActionListener(e -> returnToMainMenu());
+
+        // Add components with spacing
+        mainPanel.add(Box.createVerticalStrut(20));
+        mainPanel.add(gameOverLabel);
+        mainPanel.add(Box.createVerticalStrut(20));
+        mainPanel.add(finalScoreLabel);
+        mainPanel.add(Box.createVerticalStrut(20));
+        buttonPanel.add(retryButton);
+        buttonPanel.add(mainMenuButton);
+        mainPanel.add(buttonPanel);
+        mainPanel.add(Box.createVerticalStrut(20));
+
+        gameOverDialog.add(mainPanel);
+    }
+
+    
+    private void showGameOverScreen() {
+        if (!gameOverScreenShown) {
+            gameOverScreenShown = true;
+            finalScoreLabel.setText("Final Score: " + score);
+            gameOverDialog.setVisible(true);
+        }
+    }
+    
+        private void createPauseMenu() {
+         pauseDialog = new JDialog();
+        pauseDialog.setSize(300, 200);
+        pauseDialog.setLayout(new BorderLayout());
+        pauseDialog.setLocationRelativeTo(null);
+        pauseDialog.setModal(true);
+        pauseDialog.setUndecorated(true);
+
+        JLabel pauseLabel = new JLabel("Game Paused", JLabel.CENTER);
+        pauseLabel.setFont(new Font("Arial", Font.BOLD, 20));
+       
+        pauseDialog.add(pauseLabel, BorderLayout.NORTH);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout());
+        
+        JButton continueButton = new JButton(continueButtonImg);
+        continueButton.addActionListener(e -> resumeGame());
+        JButton retryButton = new JButton(retryButtonImg);
+        retryButton.addActionListener(e -> restartGame());
+        JButton mainMenuButton = new JButton(mainMenuButtonImg);
+        mainMenuButton.addActionListener(e -> returnToMainMenu());
+        
+        buttonPanel.add(continueButton);
+        buttonPanel.add(retryButton);
+        buttonPanel.add(mainMenuButton);
+        
+        pauseDialog.add(buttonPanel, BorderLayout.CENTER);
+    }
+    private void pauseGame() {
+        if (!isPaused) {
+            isPaused = true;
+            gameLoop.stop();
+            pauseButton.setEnabled(false);
+            pauseDialog.setVisible(true);
+        }
+    }
+
+    private void restartGame() {
+        score = 0;
+        lives = 3;
+        gameOver = false;
+        
+        // Reset the map and all entities
+        loadMap();
+        resetPositions();
+        
+        // Reset game controls
+        isPaused = false;
+        pauseDialog.setVisible(false);
+        
+        // Restart the game loop
+        gameLoop.start();
+        pauseButton.setEnabled(true);
+    }
+    
+        private void resumeGame() {
+        isPaused = false;
+        pauseDialog.setVisible(false);
+        gameLoop.start();
+        pauseButton.setEnabled(true);
+    }
+    
+        private void returnToMainMenu() {
+        // Stop the game
+        gameLoop.stop();
+        
+        // Hide and dispose the game over dialog if it's showing
+        if (gameOverDialog != null && gameOverDialog.isVisible()) {
+            gameOverDialog.setVisible(false);
+            gameOverDialog.dispose();
+        }
+        
+        // Hide and dispose the pause dialog if it's showing
+        if (pauseDialog != null && pauseDialog.isVisible()) {
+            pauseDialog.setVisible(false);
+            pauseDialog.dispose();
+        }
+
+        // Create and show the menu page
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new MenuPage().setVisible(true);
+            }
+        });
+
+       JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (frame != null) {
+            frame.dispose();
+        }
+    }
+        @Override
+    public void addNotify() {
+        super.addNotify();
+        this.parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+    }
     /**
      *loads the map
      */
@@ -267,7 +401,7 @@ if (resourceUrl == null) {
                         break;
                     case ' ':
                         // food
-                        Block food = new Block(null, x + 14, y + 14, 4, 4);
+                        Block food = new Block(powerFoodImage, x + 14, y + 14, 4, 4);
                         foods.add(food);
                         break;
                     default:
@@ -296,7 +430,7 @@ if (resourceUrl == null) {
 
         g.setColor(Color.WHITE);
         for (Block food : foods) {
-            g.fillRect(food.x, food.y, food.width, food.height);
+            g.drawImage(food.image,food.x, food.y, food.width, food.height,null);
         }
         // score
         g.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -386,6 +520,10 @@ if (resourceUrl == null) {
         repaint();
         if (gameOver) {
             gameLoop.stop();
+            showGameOverScreen();
+        }
+        if (!isPaused) {
+            repaint();
         }
     }
 
@@ -394,7 +532,16 @@ if (resourceUrl == null) {
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) {   
+       if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            pauseGame();
+        }
+
+        // Left
+        // Down
+        // Up
+        // Right
+        
     }
 
     @Override
@@ -407,13 +554,33 @@ if (resourceUrl == null) {
             gameOver = false;
             gameLoop.start();
         }
-        // System.out.println("KeyEvent: " + e.getKeyCode());
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_UP -> pacman.updateDirection('U');
-            case KeyEvent.VK_DOWN -> pacman.updateDirection('D');
-            case KeyEvent.VK_LEFT -> pacman.updateDirection('L');
-            case KeyEvent.VK_RIGHT -> pacman.updateDirection('R');
-            default -> {
+//        // System.out.println("KeyEvent: " + e.getKeyCode());
+//        switch (e.getKeyCode()) {
+//            case KeyEvent.VK_UP -> pacman.updateDirection('U');
+//            case KeyEvent.VK_DOWN -> pacman.updateDirection('D');
+//            case KeyEvent.VK_LEFT -> pacman.updateDirection('L');
+//            case KeyEvent.VK_RIGHT -> pacman.updateDirection('R');
+//            default -> {
+//            }
+//        }
+            switch (e.getKeyCode()) {
+            case KeyEvent.VK_H, KeyEvent.VK_LEFT -> // Left
+            {
+                pacman.updateDirection('L');
+                pacman.image = pacmanLeftImage;
+            }
+            case KeyEvent.VK_J, KeyEvent.VK_DOWN -> {
+                pacman.updateDirection('D');
+                pacman.image = pacmanDownImage;
+            }
+            case KeyEvent.VK_K, KeyEvent.VK_UP -> // Down
+            {
+                pacman.updateDirection('U');
+                pacman.image = pacmanUpImage;
+            }
+            case KeyEvent.VK_L, KeyEvent.VK_RIGHT -> {
+                pacman.updateDirection('R');
+                pacman.image = pacmanRightImage;
             }
         }
 

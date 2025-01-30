@@ -36,10 +36,10 @@ public class MenuPage extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         controlsButton = new javax.swing.JButton();
         scoreButton = new javax.swing.JButton();
-        exitButton = new javax.swing.JButton();
-        enterNameTextArea = new javax.swing.JTextField();
         usernamePannel = new javax.swing.JPanel();
         usernameLabel = new javax.swing.JLabel();
+        enterNameTextArea = new javax.swing.JTextField();
+        exitButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -126,11 +126,11 @@ public class MenuPage extends javax.swing.JFrame {
     scoreButton.setText("Scores");
     getContentPane().add(scoreButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 500, 90, 40));
 
-    exitButton.setBackground(new java.awt.Color(0, 255, 51));
-    exitButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-    exitButton.setForeground(new java.awt.Color(255, 255, 255));
-    exitButton.setText("Exit");
-    getContentPane().add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 500, 100, 40));
+    usernamePannel.setBackground(new java.awt.Color(0, 255, 51));
+
+    usernameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+    usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
+    usernameLabel.setText("UserName");
 
     enterNameTextArea.setText("--name--");
     enterNameTextArea.addActionListener(new java.awt.event.ActionListener() {
@@ -138,13 +138,6 @@ public class MenuPage extends javax.swing.JFrame {
             enterNameTextAreaActionPerformed(evt);
         }
     });
-    getContentPane().add(enterNameTextArea, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 180, 190, -1));
-
-    usernamePannel.setBackground(new java.awt.Color(0, 255, 51));
-
-    usernameLabel.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-    usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
-    usernameLabel.setText("UserName");
 
     javax.swing.GroupLayout usernamePannelLayout = new javax.swing.GroupLayout(usernamePannel);
     usernamePannel.setLayout(usernamePannelLayout);
@@ -153,16 +146,26 @@ public class MenuPage extends javax.swing.JFrame {
         .addGroup(usernamePannelLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(187, Short.MAX_VALUE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+            .addComponent(enterNameTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(8, Short.MAX_VALUE))
     );
     usernamePannelLayout.setVerticalGroup(
         usernamePannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(usernamePannelLayout.createSequentialGroup()
-            .addComponent(usernameLabel)
-            .addGap(0, 4, Short.MAX_VALUE))
+            .addGroup(usernamePannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(usernameLabel)
+                .addComponent(enterNameTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 0, Short.MAX_VALUE))
     );
 
     getContentPane().add(usernamePannel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 260, 20));
+
+    exitButton.setBackground(new java.awt.Color(0, 255, 51));
+    exitButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+    exitButton.setForeground(new java.awt.Color(255, 255, 255));
+    exitButton.setText("Exit");
+    getContentPane().add(exitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 500, 100, 40));
 
     jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GameImage/bg.png"))); // NOI18N
     getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 590));
