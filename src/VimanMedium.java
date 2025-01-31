@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Random;
 import javax.swing.*;
 
-public class VimanEasy extends JPanel implements ActionListener, KeyListener {
+public class VimanMedium extends JPanel implements ActionListener, KeyListener {
 
     class Block {
         int x;
@@ -88,6 +88,7 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
     final Image orangeGhostImage;
     final Image pinkGhostImage;
     final Image redGhostImage;
+    final Image scaredGhostImage;
     final Image powerFoodImage;
 
     final Image vimanUpImage;
@@ -110,24 +111,24 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
     // Ghosts: b = blue, o = orange, p = pink, r = red
     private final String[] tileMap = {
             "XXXXXXXXXXXXXXXXXXX",
-            "X        X        X",
-            "X XX XXX X XXX XX X",
+            "X    X   X    X   X",
+            "X XXXXXX X XXXXXX X",
             "X                 X",
             "X XX X XXXXX X XX X",
             "X    X       X    X",
             "XXXX XXXX XXXX XXXX",
-            "OOOX X       X XOOO",
+            "X    X       X    X",
             "XXXX X XXrXX X XXXX",
-            "X       bpo       X",
+            "X       bpos      X",
+            "XXXX X XX XX X XXXX",
+            "X    X       X    X",
             "XXXX X XXXXX X XXXX",
-            "OOOX X       X XOOO",
-            "XXXX X XXXXX X XXXX",
-            "X        X        X",
+            "X                 X",
             "X XX XXX X XXX XX X",
             "X  X     P     X  X",
             "XX X X XXXXX X X XX",
             "X    X   X   X    X",
-            "X XXXXXX X XXXXXX X",
+            "X XXXXXXXX XXXXXX X",
             "X                 X",
             "XXXXXXXXXXXXXXXXXXX"
     };
@@ -144,7 +145,7 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
     int lives = 3;
     boolean gameOver = false;
 
-    VimanEasy() {
+    VimanMedium() {
         this.parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.BLACK);
@@ -157,8 +158,8 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
         orangeGhostImage = new ImageIcon(getClass().getResource("./Images/orangeGhost.png")).getImage();
         pinkGhostImage = new ImageIcon(getClass().getResource("./Images/pinkGhost.png")).getImage();
         redGhostImage = new ImageIcon(getClass().getResource("./Images/redGhost.png")).getImage();
+        scaredGhostImage = new ImageIcon(getClass().getResource("./Images/scaredGhost.png")).getImage();
         powerFoodImage = new ImageIcon(getClass().getResource("./Images/powerFood.png")).getImage();
-        ;
         vimanUpImage = new ImageIcon(getClass().getResource("./Images/vimanUp.png")).getImage();
         vimanDownImage = new ImageIcon(getClass().getResource("./Images/vimanDown.png")).getImage();
         vimanLeftImage = new ImageIcon(getClass().getResource("./Images/vimanLeft.png")).getImage();
@@ -174,7 +175,7 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
             ghost.updateDirection(newDirection);
         }
         // how long it takes to start timer, milliseconds gone between frames
-        gameLoop = new Timer(50, this); // 20fps (1000/50)
+        gameLoop = new Timer(45, this); // 20fps (1000/50)
         gameLoop.start();
         createGameOverScreen();
         createPauseMenu();
@@ -184,7 +185,7 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
         pauseButton.addActionListener(e -> pauseGame());
         setLayout(null);
         add(pauseButton);
-    
+
     }
 
     private void createGameOverScreen() {
@@ -409,6 +410,11 @@ public class VimanEasy extends JPanel implements ActionListener, KeyListener {
                         // red ghost
                         Block ghost = new Block(redGhostImage, x, y, tileSize, tileSize);
                         ghosts.add(ghost);
+                        break;
+                    }
+                    case 's': {
+                        Block scaredGhost = new Block(scaredGhostImage, x, y, tileSize, tileSize);
+                        ghosts.add(scaredGhost);
                         break;
                     }
                     case 'P':
