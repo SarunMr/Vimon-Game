@@ -45,7 +45,7 @@ public class MenuPage extends javax.swing.JFrame {
         scoreButton = new javax.swing.JButton();
         usernamePannel = new javax.swing.JPanel();
         usernameLabel = new javax.swing.JLabel();
-        enterNameTextArea = new javax.swing.JTextField();
+        enterNameTextField = new javax.swing.JTextField();
         profileButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
@@ -154,12 +154,7 @@ public class MenuPage extends javax.swing.JFrame {
     usernameLabel.setForeground(new java.awt.Color(255, 255, 255));
     usernameLabel.setText("UserName");
 
-    enterNameTextArea.setText("--name--");
-    enterNameTextArea.addActionListener(new java.awt.event.ActionListener() {
-        public void actionPerformed(java.awt.event.ActionEvent evt) {
-            enterNameTextAreaActionPerformed(evt);
-        }
-    });
+    enterNameTextField.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
 
     javax.swing.GroupLayout usernamePannelLayout = new javax.swing.GroupLayout(usernamePannel);
     usernamePannel.setLayout(usernamePannelLayout);
@@ -168,14 +163,16 @@ public class MenuPage extends javax.swing.JFrame {
         .addGroup(usernamePannelLayout.createSequentialGroup()
             .addContainerGap()
             .addComponent(usernameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(enterNameTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(enterNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(19, 19, 19))
     );
     usernamePannelLayout.setVerticalGroup(
         usernamePannelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addComponent(usernameLabel)
-        .addComponent(enterNameTextArea, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGroup(usernamePannelLayout.createSequentialGroup()
+            .addComponent(usernameLabel)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addComponent(enterNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
     );
 
     getContentPane().add(usernamePannel, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 260, 20));
@@ -184,14 +181,12 @@ public class MenuPage extends javax.swing.JFrame {
     profileButton.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
     profileButton.setForeground(new java.awt.Color(255, 255, 255));
     profileButton.setText("Profile");
-    profileButton.setActionCommand("Profile");
     profileButton.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             profileButtonActionPerformed(evt);
         }
     });
     getContentPane().add(profileButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 500, 100, 40));
-    profileButton.getAccessibleContext().setAccessibleName("Profile");
 
     jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GameImage/bg.png"))); // NOI18N
     getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 580));
@@ -232,7 +227,7 @@ public class MenuPage extends javax.swing.JFrame {
     }// GEN-LAST:event_checkboxEasyActionPerformed
 
     private void playButtonMouseClicked(java.awt.event.MouseEvent evt) {// GEN-FIRST:event_playButtonMouseClicked
-        String username = enterNameTextArea.getText();
+        String username = enterNameTextField.getText();
         // TODO add your handling code here:
         if (username.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Username must be entered!", "Input Error", JOptionPane.WARNING_MESSAGE);
@@ -321,7 +316,7 @@ public class MenuPage extends javax.swing.JFrame {
     private javax.swing.JPanel GameModePannel;
     private javax.swing.JCheckBox checkboxEasy;
     private javax.swing.JButton controlsButton;
-    private javax.swing.JTextField enterNameTextArea;
+    private javax.swing.JTextField enterNameTextField;
     private javax.swing.JLabel gametTitleImage;
     private javax.swing.JCheckBox hardButton;
     private javax.swing.JButton jButton2;
