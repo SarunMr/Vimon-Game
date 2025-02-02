@@ -34,18 +34,30 @@ public class Leaderboard extends javax.swing.JFrame {
                 level_btn = new javax.swing.JButton();
                 jScrollPane1 = new javax.swing.JScrollPane();
                 leaderboard_table = new javax.swing.JTable();
+                menuButton = new javax.swing.JButton();
+                jPanel1 = new javax.swing.JPanel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+                setBackground(new java.awt.Color(0, 0, 0));
+                getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+                level_input.setBackground(new java.awt.Color(51, 51, 51));
+                level_input.setForeground(new java.awt.Color(255, 255, 255));
                 level_input.setText("level");
+                getContentPane().add(level_input, new org.netbeans.lib.awtextra.AbsoluteConstraints(91, 29, 196, -1));
 
+                level_btn.setBackground(new java.awt.Color(0, 255, 51));
+                level_btn.setForeground(new java.awt.Color(255, 255, 255));
                 level_btn.setText("search");
                 level_btn.addMouseListener(new java.awt.event.MouseAdapter() {
                         public void mouseClicked(java.awt.event.MouseEvent evt) {
                                 level_btnMouseClicked(evt);
                         }
                 });
+                getContentPane().add(level_btn, new org.netbeans.lib.awtextra.AbsoluteConstraints(299, 29, -1, -1));
 
+                leaderboard_table.setBackground(new java.awt.Color(51, 51, 51));
+                leaderboard_table.setForeground(new java.awt.Color(255, 255, 255));
                 leaderboard_table.setModel(new javax.swing.table.DefaultTableModel(
                         new Object [][] {
                                 {null, null, null},
@@ -59,31 +71,31 @@ public class Leaderboard extends javax.swing.JFrame {
                 ));
                 jScrollPane1.setViewportView(leaderboard_table);
 
-                javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-                getContentPane().setLayout(layout);
-                layout.setHorizontalGroup(
-                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(48, 48, 48)
-                                .addComponent(level_input, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(level_btn)
-                                .addContainerGap(62, Short.MAX_VALUE))
-                        .addGroup(layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                                .addContainerGap())
+                getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 68, 396, 304));
+
+                menuButton.setBackground(new java.awt.Color(0, 0, 0));
+                menuButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mainMenuButton.png"))); // NOI18N
+                menuButton.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                menuButtonActionPerformed(evt);
+                        }
+                });
+                getContentPane().add(menuButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 56, -1));
+
+                jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+
+                javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+                jPanel1.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 410, Short.MAX_VALUE)
                 );
-                layout.setVerticalGroup(
-                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                                .addGap(29, 29, 29)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(level_input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(level_btn))
-                                .addGap(12, 12, 12)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE))
+                jPanel1Layout.setVerticalGroup(
+                        jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 370, Short.MAX_VALUE)
                 );
+
+                getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 410, 370));
 
                 pack();
                 setLocationRelativeTo(null);
@@ -113,6 +125,12 @@ public class Leaderboard extends javax.swing.JFrame {
 		 leaderboard_table.setModel(model);
 		
         }//GEN-LAST:event_level_btnMouseClicked
+
+        private void menuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuButtonActionPerformed
+                // TODO add your handling code here:
+		new MenuPage().setVisible(true);
+		this.dispose();
+        }//GEN-LAST:event_menuButtonActionPerformed
 
 	/**
 	 * @param args the command line arguments
@@ -176,9 +194,11 @@ public class Leaderboard extends javax.swing.JFrame {
 
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
+        private javax.swing.JPanel jPanel1;
         private javax.swing.JScrollPane jScrollPane1;
         private javax.swing.JTable leaderboard_table;
         private javax.swing.JButton level_btn;
         private javax.swing.JTextField level_input;
+        private javax.swing.JButton menuButton;
         // End of variables declaration//GEN-END:variables
 }

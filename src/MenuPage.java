@@ -49,6 +49,7 @@ displayStartNick();
                 usernameLabel = new javax.swing.JLabel();
                 nickname_input = new javax.swing.JTextField();
                 profileButton = new javax.swing.JButton();
+                backtoLoginButton = new javax.swing.JButton();
                 jLabel1 = new javax.swing.JLabel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -195,6 +196,15 @@ displayStartNick();
         });
         getContentPane().add(profileButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 500, 100, 40));
 
+        backtoLoginButton.setBackground(new java.awt.Color(0, 0, 0));
+        backtoLoginButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/backToLogin.png"))); // NOI18N
+        backtoLoginButton.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        backtoLoginButtonActionPerformed(evt);
+                }
+        });
+        getContentPane().add(backtoLoginButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 40));
+
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/GameImage/bg.png"))); // NOI18N
         getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 580));
 
@@ -226,6 +236,12 @@ displayStartNick();
 		new Leaderboard().setVisible(true); 
 		this.dispose();
         }//GEN-LAST:event_scoreButtonMouseClicked
+
+        private void backtoLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backtoLoginButtonActionPerformed
+                // TODO add your handling code here:
+		new LoginPage().setVisible(true);
+		this.dispose();
+        }//GEN-LAST:event_backtoLoginButtonActionPerformed
 
     private void mediumButtonActionPerformed(java.awt.event.ActionEvent evt) {
         mediumButton.setSelected(true);
@@ -345,6 +361,7 @@ displayStartNick();
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JPanel GameModePannel;
+        private javax.swing.JButton backtoLoginButton;
         private javax.swing.JCheckBox checkboxEasy;
         private javax.swing.JButton controlsButton;
         private javax.swing.JLabel gametTitleImage;
