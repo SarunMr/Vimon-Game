@@ -17,6 +17,7 @@ import java.sql.SQLException;
 public class AuthenticationController {
 
  private static int currentUserId = 1;
+ public static String currentnickName = null;
 
 
  public static int getUserId(){
@@ -28,12 +29,13 @@ public class AuthenticationController {
 		String hashedPassword = hashPassword(password);
 
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			String query = "INSERT INTO users (username,password,security_question) VALUES (?, ?, ?)";
+			String query = "INSERT INTO users (username,password,security_question,nickname) VALUES (?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, userName);
 			pstmt.setString(2,hashedPassword);
 			pstmt.setString(3, securityQuestion);
+			pstmt.setString(4, userName);
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0;
@@ -53,7 +55,7 @@ public class AuthenticationController {
 		String hashedPassword = hashPassword(password);
 		System.out.println(hashedPassword);
 		try (Connection conn = DatabaseConnection.getConnection()) {
-			String query = "SELECT id, username  FROM users WHERE username = ? AND password = ?";
+			String query = "SELECT id, username,nickname  FROM users WHERE username = ? AND password = ?";
 			PreparedStatement pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, username);
 			pstmt.setString(2, hashedPassword);
@@ -61,6 +63,7 @@ public class AuthenticationController {
 
 			if (rs.next()) {
 				currentUserId = rs.getInt("id");
+				currentnickName = rs.getString("nickname");
 				return true;
 			}
 		} catch (SQLException e) {
@@ -92,6 +95,40 @@ public class AuthenticationController {
 			PreparedStatement pstmt = conn.prepareStatement(query);
 
 			pstmt.setInt(1, getUserId());
+
+			int rowsAffected = pstmt.executeUpdate();
+			return rowsAffected > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public static String getNickName(){
+		try (Connection conn = DatabaseConnection.getConnection()) {
+			String query = "select nickname from users where id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+
+			pstmt.setInt(1, getUserId());
+			ResultSet rs = pstmt.executeQuery();
+
+			if (rs.next()) {
+				 return rs.getString("nickname");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return null;
+	}
+
+	public static boolean changeNickName(String nickname){
+		try (Connection conn = DatabaseConnection.getConnection()) {
+			String query = "update users set nickname = ? where id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, nickname);
+			pstmt.setInt(2, getUserId());
 
 			int rowsAffected = pstmt.executeUpdate();
 			return rowsAffected > 0;

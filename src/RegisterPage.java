@@ -216,31 +216,32 @@ public class RegisterPage extends javax.swing.JFrame {
 		String password_text = new String(createPasswordField.getPassword());
 		String confirm_password = new String(confirmPasswordField.getPassword());
 
-		  if (!(question_text.matches("\\d+"))) {
-			JOptionPane.showMessageDialog(this, "only number is valid!!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-return;
-}
-
-		if((question_text.length() <= 10)){
-			JOptionPane.showMessageDialog(this, "security question can't be  more then 10 integer!!", "Validation Error", JOptionPane.ERROR_MESSAGE);
-		return;
-		}
-
-		// Validation checks
 		if (username_text.isEmpty()) {
 			JOptionPane.showMessageDialog(this, "Name cannot be blank", "Validation Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 
 		if (question_text.isEmpty()) {
-			JOptionPane.showMessageDialog(this, "Username cannot be blank", "Validation Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(this, "Questions text cannot be blank", "Validation Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		  if (!(question_text.matches("\\d+"))) {
+			JOptionPane.showMessageDialog(this, "only number is valid!!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+return;
+}
+
 
 		if (password_text.length() < 5) {
 			JOptionPane.showMessageDialog(this, "Password must be at least 5 characters long", "Validation Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		if(question_text.length() != 10){
+			JOptionPane.showMessageDialog(this, "security question must be 10 integer!!", "Validation Error", JOptionPane.ERROR_MESSAGE);
+		return;
+		}
+
+
+		// Validation checks
 
 		if(!password_text.equals(confirm_password)){
 			JOptionPane.showMessageDialog(this, "password does not match!!", "Validation Error", JOptionPane.ERROR_MESSAGE);

@@ -200,6 +200,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Scores"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="scoreButtonMouseClicked"/>
+      </Events>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
           <AbsoluteConstraints x="130" y="500" width="90" height="40"/>
@@ -225,7 +228,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="usernameLabel" min="-2" pref="67" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="enterNameTextField" min="-2" pref="174" max="-2" attributes="0"/>
+                  <Component id="nickname_input" min="-2" pref="174" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -236,7 +239,7 @@
                   <Component id="usernameLabel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="4" max="32767" attributes="0"/>
               </Group>
-              <Component id="enterNameTextField" pref="0" max="32767" attributes="0"/>
+              <Component id="nickname_input" pref="0" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>
@@ -252,7 +255,7 @@
             <Property name="text" type="java.lang.String" value="UserName"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="enterNameTextField">
+        <Component class="javax.swing.JTextField" name="nickname_input">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="10" style="0"/>

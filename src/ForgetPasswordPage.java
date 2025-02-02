@@ -61,6 +61,7 @@ public class ForgetPasswordPage extends javax.swing.JFrame {
                 usernameField.setBackground(new java.awt.Color(51, 51, 51));
                 usernameField.setForeground(new java.awt.Color(255, 255, 255));
 
+                jLabel4.setForeground(new java.awt.Color(255, 255, 255));
                 jLabel4.setText("Enter New Password");
 
                 newPasswordField.setBackground(new java.awt.Color(51, 51, 51));
@@ -170,6 +171,10 @@ public class ForgetPasswordPage extends javax.swing.JFrame {
 	if(username.isEmpty() || question.isEmpty() || new_password.isEmpty()){
 		JOptionPane.showMessageDialog(this, "Field is blank!!", "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
+	if (new_password.length() < 5) {
+			JOptionPane.showMessageDialog(this, "Password must be at least 5 characters long", "Validation Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 
 	boolean success = AuthenticationController.forgotPassword(username, question, new_password);
 

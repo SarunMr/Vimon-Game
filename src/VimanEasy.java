@@ -1,4 +1,5 @@
 
+import Database.ScoreController;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -265,6 +266,7 @@ private void createGameOverScreen() {
         if (!gameOverScreenShown) {
             gameOverScreenShown = true;
             finalScoreLabel.setText("Final Score: " + score);
+	    ScoreController.setScore(score, 1);
             gameOverDialog.setVisible(true);
         }
     }
