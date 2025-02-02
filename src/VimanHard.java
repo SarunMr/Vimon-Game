@@ -107,7 +107,7 @@ public class VimanHard extends JPanel implements ActionListener, KeyListener {
     private boolean gameOverScreenShown = false;
     private JLabel finalScoreLabel; // Add this as a class field
     private JFrame parentFrame;
-
+    private String playerUsername;
     // X = wall, O = skip, P = pac man, ' ' = food
     // Ghosts: b = blue, o = orange, p = pink, r = red
     private final String[] tileMap = {
@@ -146,7 +146,8 @@ public class VimanHard extends JPanel implements ActionListener, KeyListener {
     int lives = 3;
     boolean gameOver = false;
 
-    VimanHard() {
+    VimanHard(String username) {
+	this.playerUsername = username;
         this.parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.BLACK);
@@ -190,9 +191,9 @@ public class VimanHard extends JPanel implements ActionListener, KeyListener {
 
     }
 
-    private void createGameOverScreen() {
+private void createGameOverScreen() {
         gameOverDialog = new JDialog(parentFrame);
-        gameOverDialog.setSize(300, 250);
+        gameOverDialog.setSize(300, 300); // Increased height to accommodate new labels
         gameOverDialog.setLayout(new BorderLayout());
         gameOverDialog.setLocationRelativeTo(null);
         gameOverDialog.setModal(true);
@@ -211,10 +212,23 @@ public class VimanHard extends JPanel implements ActionListener, KeyListener {
         gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Score Label
-        finalScoreLabel = new JLabel(); // Initialize the class field
+        finalScoreLabel = new JLabel();
         finalScoreLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         finalScoreLabel.setForeground(Color.WHITE);
         finalScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Game Mode Label
+        JLabel gameModeLabel = new JLabel("Mode: Hard");
+        gameModeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        gameModeLabel.setForeground(Color.GREEN);
+        gameModeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Username Label
+        String username = playerUsername;
+        JLabel usernameLabel = new JLabel("Player: " + username);
+        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        usernameLabel.setForeground(Color.WHITE);
+        usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Button Panel
         JPanel buttonPanel = new JPanel();
@@ -236,6 +250,10 @@ public class VimanHard extends JPanel implements ActionListener, KeyListener {
         mainPanel.add(gameOverLabel);
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(finalScoreLabel);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(gameModeLabel);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(usernameLabel);
         mainPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(retryButton);
         buttonPanel.add(mainMenuButton);

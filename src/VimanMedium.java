@@ -90,6 +90,7 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
     final Image redGhostImage;
     final Image scaredGhostImage;
     final Image powerFoodImage;
+    final String playerUsername;
 
     final Image vimanUpImage;
     final Image vimanDownImage;
@@ -107,8 +108,7 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
     private JLabel finalScoreLabel; // Add this as a class field
     private JFrame parentFrame;
 
-    // X = wall, O = skip, P = pac man, ' ' = food
-    // Ghosts: b = blue, o = orange, p = pink, r = red
+
     private final String[] tileMap = {
             "XXXXXXXXXXXXXXXXXXX",
             "X    X   X    X   X",
@@ -145,7 +145,8 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
     int lives = 3;
     boolean gameOver = false;
 
-    VimanMedium() {
+    VimanMedium(String username) {
+	    this.playerUsername = username;
         this.parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         setPreferredSize(new Dimension(boardWidth, boardHeight));
         setBackground(Color.BLACK);
@@ -175,7 +176,7 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
             ghost.updateDirection(newDirection);
         }
         // how long it takes to start timer, milliseconds gone between frames
-        gameLoop = new Timer(45, this); // 20fps (1000/50)
+        gameLoop = new Timer(45, this); //  (1000/45) this increases the fps for faster gameplay
         gameLoop.start();
         createGameOverScreen();
         createPauseMenu();
@@ -188,9 +189,9 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
 
     }
 
-    private void createGameOverScreen() {
+private void createGameOverScreen() {
         gameOverDialog = new JDialog(parentFrame);
-        gameOverDialog.setSize(300, 250);
+        gameOverDialog.setSize(300, 300); // Increased height to accommodate new labels
         gameOverDialog.setLayout(new BorderLayout());
         gameOverDialog.setLocationRelativeTo(null);
         gameOverDialog.setModal(true);
@@ -209,10 +210,23 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
         gameOverLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Score Label
-        finalScoreLabel = new JLabel(); // Initialize the class field
+        finalScoreLabel = new JLabel();
         finalScoreLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         finalScoreLabel.setForeground(Color.WHITE);
         finalScoreLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Game Mode Label
+        JLabel gameModeLabel = new JLabel("Mode: Medium");
+        gameModeLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        gameModeLabel.setForeground(Color.GREEN);
+        gameModeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Username Label
+        String username = playerUsername;
+        JLabel usernameLabel = new JLabel("Player: " + username);
+        usernameLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        usernameLabel.setForeground(Color.WHITE);
+        usernameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Button Panel
         JPanel buttonPanel = new JPanel();
@@ -234,6 +248,10 @@ public class VimanMedium extends JPanel implements ActionListener, KeyListener {
         mainPanel.add(gameOverLabel);
         mainPanel.add(Box.createVerticalStrut(20));
         mainPanel.add(finalScoreLabel);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(gameModeLabel);
+        mainPanel.add(Box.createVerticalStrut(10));
+        mainPanel.add(usernameLabel);
         mainPanel.add(Box.createVerticalStrut(20));
         buttonPanel.add(retryButton);
         buttonPanel.add(mainMenuButton);

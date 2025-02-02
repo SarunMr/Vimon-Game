@@ -197,6 +197,12 @@ public class MenuPage extends javax.swing.JFrame {
 
     private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
         // TODO add your handling code here:
+                java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new ProfilePage().setVisible(true);
+            }
+        });
+		this.dispose(); 
     }//GEN-LAST:event_profileButtonActionPerformed
 
     private void controlsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_controlsButtonActionPerformed
@@ -253,14 +259,14 @@ public class MenuPage extends javax.swing.JFrame {
     JPanel gamePanel;
     
     if (checkboxEasy.isSelected()) {
-        gamePanel = new VimanEasy();  // Load Easy Mode
+        gamePanel = new VimanEasy(username);  // Load Easy Mode
     } else if (mediumButton.isSelected()) {
-        gamePanel = new VimanMedium(); // Load Medium Mode
+        gamePanel = new VimanMedium(username); // Load Medium Mode
     } else if (hardButton.isSelected()) {
-        gamePanel = new VimanHard(); // Load Hard Mode
+        gamePanel = new VimanHard(username); // Load Hard Mode
     } else {
         // Default to Easy Mode if no selection is made
-        gamePanel = new VimanEasy();
+        gamePanel = new VimanEasy(username);
     }
 
     frame.add(gamePanel);
